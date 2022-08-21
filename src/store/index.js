@@ -412,6 +412,32 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    filteredCars (state) {
+      let cars = state.cars
+      cars = cars.filter(car => car.available === state.filter.available)
+      if (state.filter.query.length > 1) {
+        cars = cars.filter(car => car.car_model.includes(state.filter.query))
+      }
+      if (state.filter.from) {
+        cars = cars.filter(car => car.car_model_year >= state.filter.from)
+      }
+      if (state.filter.to) {
+        cars = cars.filter(car => car.car_model_year <= state.filter.to)
+      }
+      if (state.filter.min_price) {
+        cars = cars.filter(car => {
+          const price = parseFloat(car.price.replace('$', ''))
+          return price >= state.filter.min_price
+        })
+      }
+      if (state.filter.max_price) {
+        cars = cars.filter(car => {
+          const price = parseFloat(car.price.replace('$', ''))
+          return price <= state.filter.max_price
+        })
+      }
+      return cars
+    }
   },
   mutations: {
     setFilter (state, data) {
@@ -419,7 +445,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    
+
   },
   modules: {
   }
