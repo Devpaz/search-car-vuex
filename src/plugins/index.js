@@ -1,1 +1,1 @@
-require('./bootstrap-vue')
+import './bootstrap-vue'

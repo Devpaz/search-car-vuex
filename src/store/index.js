@@ -2,7 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-
+const filters = () =>{
+    return {
+        query: '',
+        from: 2005,
+        to: 2015,
+        min_price: 0,
+        max_price: 20000,
+        available: false
+    }
+}
 export default new Vuex.Store({
   state: {
     cars: [{ "id": 1, "car_model": "Swift", "car_model_year": 2004, "price": "$16996.19", "available": false },
@@ -402,46 +411,42 @@ export default new Vuex.Store({
       { "id": 299, "car_model": "Countryman", "car_model_year": 2011, "price": "$12588.91", "available": true },
       { "id": 300, "car_model": "Firefly", "car_model_year": 1989, "price": "$5237.33", "available": true }
     ],
-    filter: {
-      query: '',
-      from: 2005,
-      to: 2015,
-      min_price: 0,
-      max_price: 20000,
-      available: false
-    }
+    filter: filters()
   },
   getters: {
     filteredCars (state) {
-      let cars = state.cars
-      cars = cars.filter(car => car.available === state.filter.available)
-      if (state.filter.query.length > 1) {
-        cars = cars.filter(car => car.car_model.includes(state.filter.query))
-      }
-      if (state.filter.from) {
-        cars = cars.filter(car => car.car_model_year >= state.filter.from)
-      }
-      if (state.filter.to) {
-        cars = cars.filter(car => car.car_model_year <= state.filter.to)
-      }
-      if (state.filter.min_price) {
-        cars = cars.filter(car => {
-          const price = parseFloat(car.price.replace('$', ''))
-          return price >= state.filter.min_price
-        })
-      }
-      if (state.filter.max_price) {
-        cars = cars.filter(car => {
-          const price = parseFloat(car.price.replace('$', ''))
-          return price <= state.filter.max_price
-        })
-      }
-      return cars
+        let cars = state.cars
+        cars = cars.filter(car => car.available === state.filter.available)
+        if (state.filter.query.length > 1) {
+            cars = cars.filter(car => car.car_model.includes(state.filter.query))
+        }
+        if (state.filter.from) {
+            cars = cars.filter(car => car.car_model_year >= state.filter.from)
+        }
+        if (state.filter.to) {
+            cars = cars.filter(car => car.car_model_year <= state.filter.to)
+        }
+        if (state.filter.min_price) {
+            cars = cars.filter(car => {
+            const price = parseFloat(car.price.replace('$', ''))
+            return price >= state.filter.min_price
+            })
+        }
+        if (state.filter.max_price) {
+            cars = cars.filter(car => {
+            const price = parseFloat(car.price.replace('$', ''))
+            return price <= state.filter.max_price
+            })
+        }
+        return cars
     }
   },
   mutations: {
     setFilter (state, data) {
-      state.filter[data['filter']] = data.value
+        state.filter[data['filter']] = data.value
+    },
+    resetFilter (state) {
+        state.filter = filters()
     }
   },
   actions: {

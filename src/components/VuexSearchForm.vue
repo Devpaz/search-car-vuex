@@ -96,6 +96,16 @@
                     </b-form-group>
                 </b-col>
             </b-row>
+            <b-row>
+                <b-col>
+                    <b-button
+                        @click.prevent="resetFilter"
+                        variant="danger"
+                    >
+                        Restablecer filtros
+                    </b-button>
+                </b-col>
+            </b-row>
         </b-form>
     </div>
 </template>
@@ -184,6 +194,10 @@
                 }
             },
         },
-
+        methods: {
+            resetFilter () {
+                this.$store.commit('resetFilter')
+            }
+        }
     }
 </script>
